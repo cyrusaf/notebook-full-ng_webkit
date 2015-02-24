@@ -2,8 +2,8 @@ body {
 	margin: 0;
 }
 
-h1 {
-	overflow: a3uto;
+.page-header {
+	margin-bottom: 5px;
 }
 
 .sidebar {
@@ -12,6 +12,8 @@ h1 {
 	height: 100vh;
 
 	background: #e8e8e8;
+
+	overflow: auto;
 }
 
 .note-listing {
@@ -50,6 +52,28 @@ h1 {
 
 .note {
 	width: 100%;
+	overflow: auto;
+	height: calc(100vh - 115px) !important;
+}
+
+::-webkit-scrollbar {  
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+	width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #ccc;
+	border-radius: 5px;
+	background-clip: padding-box;
+}
+
+::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none;
 }
 
 .edit-textarea {
@@ -64,4 +88,8 @@ h1 {
 
 .note-buttons span {
 	margin-left: 10px;
+}
+
+.note-view {
+	padding-right: 15px;
 }
