@@ -11,7 +11,7 @@
   "window": {
     "width": 1280,
     "height": 720,
-    "toolbar": false
+    "toolbar": true
   },
   "dependencies": {
     "highlight.js": "^8.4.0",

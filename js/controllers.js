@@ -2,7 +2,7 @@ var fs = require('fs');
 var dir = getUserHome() + "/.notebook";
 var marked = require( "marked" );
 marked.setOptions({
-	highlight: function (code) {
+	highlight: function (code) {		
 		var highlighted = require('highlight.js').highlightAuto(code).value;
 		return highlighted
 	}
@@ -43,8 +43,8 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 		$scope.loadNotes();
 	}
 	$scope.saveNote = function() {
-		$scope.title = $scope.title.split(" ").join("_");
-		fs.writeFile(dir + "/" + $scope.title + ".txt", $scope.note, function(err) {});
+		var save_title = $scope.title;
+		fs.writeFile(dir + "/" + save_title + ".txt", $scope.note, function(err) {});
 	}
 	$scope.saveTitle = function() {
 		if ($scope.title == "") {
@@ -83,12 +83,22 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 		$scope.pureHTML = $sce.trustAsHtml(marked($scope.note));
 	}
 	$scope.loadNote = function(filename) {
+		// Don't load if already loaded
+		if (filename == $scope.title) {
+			return;
+		}
+
 		// Save old note
 		if ($scope.title != "") {
 			$scope.saveNote();
 		}
-		// Check if note exists
+		// Check if new note exists
 		if (fs.existsSync(dir + "/" + filename + ".txt")) {
+
+			if ($scope.mode == 1) {
+				$scope.toggleMode();
+			}
+
 			oldTitle = filename;
 			$scope.title = filename;
 	        $scope.note = fs.readFileSync(dir + '/' + filename + '.txt', 'utf8');
@@ -102,7 +112,18 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 		$scope.notes = [];
 		var files = fs.readdirSync(dir);
 		for (var i = 0; i < files.length; i++) {
-			$scope.notes.push(files[i].slice(0,files[i].length - 4).split("_").join(" "));	
+			$scope.notes.push(files[i].slice(0,files[i].length - 4));	
+		}
+	}
+	$scope.deleteNote = function() {
+		if ($scope.title != "") {
+			fs.unlinkSync(dir + '/' + $scope.title + '.txt');
+			oldTitle = "";
+			$scope.title = ""
+;			$scope.loadNotes();
+			if ($scope.notes.length > 0) {
+				$scope.loadNote($scope.notes[0]);
+			}
 		}
 	}
 
@@ -112,6 +133,16 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 	if ($scope.notes.length > 0) {
 		$scope.loadNote($scope.notes[0]);
 	}
+
+	var gui = require('nw.gui');
+	var win = gui.Window.get();
+	win.on('close', function() {
+		this.hide();
+		if ($scope.note != "") {
+			$scope.saveNote();
+		}
+		this.close(true)
+;	});
 }]);
 
 

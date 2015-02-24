@@ -1,5 +1,5 @@
 <div class="sidebar">
-	<div class="note-listing" ng-repeat="note in notes track by $index" ng-click="loadNote(note)">{{note}}</div>
+	<div class="note-listing" ng-repeat="note_obj in notes track by $index" ng-click="loadNote(note_obj)">{{note_obj}}</div>
 </div>
 
 <div class="content">
@@ -9,7 +9,7 @@
 				<button type="button" class="btn btn-success" ng-click="newNote()">New Note <span class="glyphicon glyphicon-file"></span></button>	
 				<button type="button" class="btn btn-primary" ng-click="toggleMode()" ng-bind-html="modeString"></button>	
 				<button type="button" class="btn btn-warning" ng-click="saveNote()">Save Note <span class="glyphicon glyphicon-floppy-disk"></span></button>	
-				<button type="button" class="btn btn-danger">Delete Note <span class="glyphicon glyphicon-trash"></span></button>	
+				<button type="button" class="btn btn-danger" ng-click="deleteNote()">Delete Note <span class="glyphicon glyphicon-trash"></span></button>	
 			</div>
 			<div class="float-left">
 				<span>Notebook #1</span>
