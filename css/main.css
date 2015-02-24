@@ -1,0 +1,49 @@
+body {
+	margin: 0;
+}
+
+.sidebar {
+	float: left;
+	width: 300px;
+	height: 100vh;
+
+	background: #e8e8e8;
+}
+
+.content {
+	float: left;
+	width: calc(100% - 300px);
+	height: 100vh;
+
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.editTitle {
+	color: #777;
+	font-size: 18pt;
+	border: none;
+}
+
+.note-buttons {
+	margin-left: 20px;
+	float: right;
+}
+
+.note {
+	width: 100%;
+}
+
+.edit-textarea {
+	width: 100%;
+	height: calc(100vh - 200px) !important;
+	resize: none;
+}
+
+.note-buttons button {
+	width: 135px;
+}
+
+.note-buttons span {
+	margin-left: 10px;
+}

@@ -1,0 +1,24 @@
+<div class="sidebar">
+	
+</div>
+
+<div class="content">
+	<div class="page-header">
+		<h1>
+			<span>ECON 201</span>
+			<small ng-if="titleMode == 0" ng-click="toggleTitleMode()">{{title}}</small>
+			<input class="editTitle" ng-if="titleMode == 1" ng-click="toggleTitleMode()" focus-on="titleMode" ng-blur="toggleTitleMode()" ng-model="$parent.title" placeholder="Title...">
+
+			<div class="btn-group note-buttons">
+				<button type="button" class="btn btn-primary" ng-click="toggleMode()" ng-bind-html="modeString"></button>	
+				<button type="button" class="btn btn-warning" ng-click="saveNote()">Save Note <span class="glyphicon glyphicon-floppy-disk"></span></button>	
+				<button type="button" class="btn btn-danger">Delete Note <span class="glyphicon glyphicon-trash"></span></button>	
+			</div>
+		</h1>
+	</div>
+
+	<div class="note">
+		<textarea class="edit-textarea form-control" ng-model="$parent.note" ng-if="mode == 1"></textarea>
+		<div class="note-view" ng-if="mode == 0" ng-bind-html="$parent.pureHTML"></div>
+	</div>
+</div>
