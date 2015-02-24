@@ -1,5 +1,5 @@
 <div class="sidebar">
-	<div class="note" ng-repeat="note in notes">{{note}}</div>
+	<div class="note-listing" ng-repeat="note in notes" ng-click="loadNote(note)">{{note}}</div>
 </div>
 
 <div class="content">
