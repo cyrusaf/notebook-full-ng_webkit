@@ -16,6 +16,25 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 	var oldTitle = "Untitled";
 	$scope.modeString = $sce.trustAsHtml('Edit Note  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>');
 
+	$scope.newNote = function() {
+		// Check if note exists
+		if (!fs.existsSync(dir + "/Untitled.txt")) {
+			// Create Untitled.txt
+			fs.writeFileSync(dir + "/Untitled.txt", '');
+			$scope.loadNote("Untitled");
+			$scope.loadNotes();
+			return
+		}
+
+		var j = 1;
+		while (fs.existsSync(dir + "/Untitled" + j + ".txt")) {
+			j++;
+		}
+		// Create Untitled + j + .txt
+		fs.writeFileSync(dir + "/Untitled" + j + ".txt", '');
+		$scope.loadNote("Untitled" + j);
+		$scope.loadNotes();
+	}
 	$scope.saveNote = function() {
 		$scope.title = $scope.title.split(" ").join("_");
 		fs.writeFile(dir + "/" + $scope.title + ".txt", $scope.note, function(err) {});

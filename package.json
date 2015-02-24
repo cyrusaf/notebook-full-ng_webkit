@@ -10,7 +10,8 @@
   "license": "ISC",
   "window": {
     "width": 1280,
-    "height": 720
+    "height": 720,
+    "toolbar": false
   },
   "dependencies": {
     "markdown": "^0.5.0",
