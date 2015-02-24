@@ -3,9 +3,7 @@ var dir = getUserHome() + "/.notebook";
 var marked = require( "marked" );
 marked.setOptions({
 	highlight: function (code) {
-		console.log(code);
 		var highlighted = require('highlight.js').highlightAuto(code).value;
-		console.log(highlighted);
 		return highlighted
 	}
 });
