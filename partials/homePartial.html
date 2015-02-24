@@ -12,9 +12,9 @@
 				<button type="button" class="btn btn-danger">Delete Note <span class="glyphicon glyphicon-trash"></span></button>	
 			</div>
 			<div class="float-left">
-				<span>ECON 201</span>
+				<span>Notebook #1</span>
 				<small ng-if="titleMode == 0" ng-click="toggleTitleMode()">{{title}}</small>
-				<input class="editTitle" ng-if="titleMode == 1" ng-click="toggleTitleMode()" focus-on="titleMode" ng-blur="toggleTitleMode()" ng-model="$parent.title" placeholder="Title...">
+				<input class="editTitle" ng-if="titleMode == 1" ng-click="toggleTitleMode()" focus-on="titleMode" ng-blur="toggleTitleMode()" ng-model="$parent.title" placeholder="Untitled...">
 			</div>
 
 			

@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "markdown": "^0.5.0",
-    "marked": "^0.3.3"
+    "marked": "^0.3.3",
+    "node-webkit-builder": "^1.0.10"
   }
 }

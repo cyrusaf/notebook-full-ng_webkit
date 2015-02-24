@@ -12,8 +12,8 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 	$scope.titleMode = 0;
 	$scope.note = "";
 	$scope.pureHTML = "";
-	$scope.title = "Untitled";
-	var oldTitle = "Untitled";
+	$scope.title = "";
+	var oldTitle = "";
 	$scope.modeString = $sce.trustAsHtml('Edit Note  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>');
 
 	$scope.newNote = function() {
@@ -99,13 +99,9 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 	// Run on ready
 	// =============
 	$scope.loadNotes();
-
-	console.log($scope.notes);
-
-	$scope.loadNote($scope.notes[0]);
-
-	
-
+	if ($scope.notes.length > 0) {
+		$scope.loadNote($scope.notes[0]);
+	}
 }]);
 
 
