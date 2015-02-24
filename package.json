@@ -14,8 +14,10 @@
     "toolbar": false
   },
   "dependencies": {
+    "highlight.js": "^8.4.0",
     "markdown": "^0.5.0",
     "marked": "^0.3.3",
-    "node-webkit-builder": "^1.0.10"
+    "node-webkit-builder": "^1.0.10",
+    "pygmentize-bundled": "^2.3.0"
   }
 }

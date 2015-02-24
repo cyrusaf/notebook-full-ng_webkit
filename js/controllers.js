@@ -1,5 +1,14 @@
 var fs = require('fs');
-var dir = getUserHome() + "/.notebook"
+var dir = getUserHome() + "/.notebook";
+var marked = require( "marked" );
+marked.setOptions({
+	highlight: function (code) {
+		console.log(code);
+		var highlighted = require('highlight.js').highlightAuto(code).value;
+		console.log(highlighted);
+		return highlighted
+	}
+});
 
 var controllers = angular.module('controllers', []);
 
@@ -73,10 +82,13 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 		}
 	}
 	$scope.md_to_html = function() {
-		var marked = require( "marked" );
 		$scope.pureHTML = $sce.trustAsHtml(marked($scope.note));
 	}
 	$scope.loadNote = function(filename) {
+		// Save old note
+		if ($scope.title != "") {
+			$scope.saveNote();
+		}
 		// Check if note exists
 		if (fs.existsSync(dir + "/" + filename + ".txt")) {
 			oldTitle = filename;
