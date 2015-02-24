@@ -17,10 +17,17 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 	$scope.modeString = $sce.trustAsHtml('Edit Note  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>');
 
 	$scope.saveNote = function() {
+		$scope.title = $scope.title.split(" ").join("_");
 		fs.writeFile(dir + "/" + $scope.title + ".txt", $scope.note, function(err) {});
 	}
 	$scope.saveTitle = function() {
+		if ($scope.title == "") {
+			$scope.title = oldTitle;
+			return
+		}
 		fs.rename(dir + '/' + oldTitle + '.txt', dir + '/' + $scope.title + '.txt', function(err){});
+		oldTitle = $scope.title;
+		$scope.loadNotes();
 	}
 	$scope.toggleMode = function() {
 		if ($scope.mode == 0) {
@@ -59,22 +66,24 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 	        $scope.md_to_html();
 		}
 	}
+	$scope.loadNotes = function() {
+		if (!fs.existsSync(dir)) {
+			fs.mkdirSync(dir);
+		}
+		$scope.notes = [];
+		var files = fs.readdirSync(dir);
+		for (var i = 0; i < files.length; i++) {
+			$scope.notes.push(files[i].slice(0,files[i].length - 4).split("_").join(" "));	
+		}
+	}
 
 	// Run on ready
 	// =============
-
-	if (!fs.existsSync(dir)) {
-		fs.mkdirSync(dir);
-	}
-
-	var files = fs.readdirSync(dir);
-	for (var i = 0; i < files.length; i++) {
-		$scope.notes.push(files[i].slice(0,files[i].length - 4));	
-	}
+	$scope.loadNotes();
 
 	console.log($scope.notes);
 
-	$scope.loadNote('Untitled');
+	$scope.loadNote($scope.notes[0]);
 
 	
 
