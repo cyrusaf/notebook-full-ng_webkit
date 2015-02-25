@@ -41,9 +41,12 @@ app.directive('ngTab', function() {
 	                	var end   = element[0].selectionEnd;
 	                	scope.$apply(function() {
 	                		scope.addTab(start, end);
-	                		var textarea = element[0];
-	                		textarea.setSelectionRange(0,0);
 	                	});
+	                	scope.$apply(function() {
+                			var textarea = element[0];
+	                		textarea.selectionStart = start + 1; 
+	                		textarea.selectionEnd = start + 1; 
+                		});
 	                }
 	            });
             }
