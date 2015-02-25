@@ -30,3 +30,22 @@ app.directive('focusOn', function($timeout, $parse) {
 		}
 	}
 });
+
+app.directive('ngTab', function() {
+        return {
+            link: function(scope, element, attrs) {
+            	element.bind("keydown keypress", function(event) {
+	                if(event.which === 9) {
+	                	event.preventDefault();
+	                	var start = element[0].selectionStart;
+	                	var end   = element[0].selectionEnd;
+	                	scope.$apply(function() {
+	                		scope.addTab(start, end);
+	                		var textarea = element[0];
+	                		textarea.setSelectionRange(0,0);
+	                	});
+	                }
+	            });
+            }
+        }
+    });

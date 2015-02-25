@@ -8,6 +8,9 @@ marked.setOptions({
 	}
 });
 
+var gui = require('nw.gui');
+var win = gui.Window.get();
+
 var controllers = angular.module('controllers', []);
 
 controllers.controller('homeController', ['$scope', '$http', '$sce', function ($scope, $http, $sce) {
@@ -119,12 +122,25 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 		if ($scope.title != "") {
 			fs.unlinkSync(dir + '/' + $scope.title + '.txt');
 			oldTitle = "";
-			$scope.title = ""
-;			$scope.loadNotes();
+			$scope.title = "";
+			$scope.loadNotes();
 			if ($scope.notes.length > 0) {
 				$scope.loadNote($scope.notes[0]);
 			}
 		}
+	}
+	$scope.addTab = function(start, end) { 
+		$scope.note = $scope.note.substring(0, start) + "\t" + $scope.note.substring(end);
+		$scope.md_to_html();
+	}
+	$scope.closeWindow = function() {
+		win.close();
+	}
+	$scope.hideWindow = function() {
+		win.minimize();
+	}
+	$scope.fullWindow = function() {
+		win.maximize();
 	}
 
 	// Run on ready
@@ -134,8 +150,6 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 		$scope.loadNote($scope.notes[0]);
 	}
 
-	var gui = require('nw.gui');
-	var win = gui.Window.get();
 	win.on('close', function() {
 		this.hide();
 		if ($scope.note != "") {

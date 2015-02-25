@@ -1,3 +1,8 @@
+<div class="toolbar">
+	<div class="toolbar-button close-button" ng-click="closeWindow()"></div>
+	<div class="toolbar-button hide-button" ng-click="hideWindow()"></div>
+	<div class="toolbar-button full-button" ng-click="fullWindow()"></div>
+</div>
 <div class="sidebar">
 	<div class="note-listing" ng-repeat="note_obj in notes track by $index" ng-click="loadNote(note_obj)">{{note_obj}}</div>
 </div>
@@ -22,7 +27,7 @@
 	</div>
 
 	<div class="note">
-		<textarea class="edit-textarea form-control" ng-model="$parent.note" ng-if="mode == 1"></textarea>
+		<textarea class="edit-textarea form-control" ng-model="$parent.note" ng-if="mode == 1" ng-tab></textarea>
 		<div class="note-view" ng-if="mode == 0" ng-bind-html="$parent.pureHTML"></div>
 	</div>
 </div>
