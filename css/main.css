@@ -9,13 +9,14 @@ body {
 	height: 26px;
 	background: #d1d1d1;
 	overflow: none;
+	display: none;
 }
 
 .toolbar-button {
 	float: left;
 	position: relative;
 	top: 5px;
-	margin-left: 5px;
+	margin-left: 7px;
 	width: 16px;
 	height: 16px;
 	border-radius: 10px;
@@ -46,7 +47,7 @@ body {
 .sidebar {
 	float: left;
 	width: 300px;
-	height: calc(100vh - 25px);
+	height: calc(100vh - 26px);
 
 	background: #e8e8e8;
 
@@ -69,7 +70,7 @@ body {
 .content {
 	float: left;
 	width: calc(100% - 300px);
-	height: calc(100vh - 25px);
+	height: calc(100vh - 26px);
 
 	padding-left: 20px;
 	padding-right: 20px;
@@ -90,7 +91,7 @@ body {
 .note {
 	width: 100%;
 	overflow: auto;
-	height: calc(100vh - 140px) !important;
+	height: calc(100vh - 141px) !important;
 }
 
 ::-webkit-scrollbar {  
