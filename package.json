@@ -11,7 +11,7 @@
   "window": {
     "width": 1280,
     "height": 720,
-    "toolbar": false,
+    "toolbar": true,
     "frame": true,
     "icon": "logo/logo_64.png"
   },

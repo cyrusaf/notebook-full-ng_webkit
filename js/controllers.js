@@ -1,4 +1,5 @@
 var fs = require('fs');
+var path = require('path');
 var dir = getUserHome() + "/.notebook";
 var marked = require( "marked" );
 marked.setOptions({
@@ -17,7 +18,6 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 
 	// Initialize scope vars
 	// ======================
-	$scope.notebooks = [];
 	$scope.notes = [];
 	$scope.mode = 0;
 	$scope.titleMode = 0;
@@ -28,24 +28,85 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 	var oldTitle = "";
 	$scope.modeString = $sce.trustAsHtml('Edit Note  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>');
 
-	$scope.newNote = function() {
+	// Sidebar
+	// ========
+	$scope.sidebar = {};
+	$scope.sidebar.mode = 'notebooks';
+	$scope.sidebar.changeMode = function() {
+		if ($scope.sidebar.mode == 'notebooks') {
+			$scope.sidebar.mode = 'notes';
+		} else {
+			$scope.sidebar.mode = 'notebooks';
+		}
+	}
+	$scope.sidebar.notebooks = ['test', 'test2'];
+	$scope.sidebar.getNotebooks = function() {
+		$scope.sidebar.notebooks = getDirectories(dir);
+	}
+	$scope.sidebar.init = function() {
+		// Get list of notebooks
+		$scope.sidebar.getNotebooks();
+		// Load first note of first notebook
+	}
+
+	// Notebook
+	// =========
+	$scope.notebook = {};
+	$scope.notebook.title = "";
+	$scope.notebook.load = function(filename) {
+		// Check if notebook exists
+		if (fs.existsSync(dir + "/" + filename)) {
+			$scope.sidebar.mode = 'notes';
+			$scope.notebook.title = filename;
+			console.log("Notebook: " + $scope.notebook.title);
+			// Reload notes
+			$scope.loadNotes(filename);
+		}
+	};
+	$scope.notebook.new = function() {
 		// Check if note exists
-		if (!fs.existsSync(dir + "/Untitled.txt")) {
+		if (!fs.existsSync(dir + "/" + 'Untitled')) {
 			// Create Untitled.txt
-			fs.writeFileSync(dir + "/Untitled.txt", '');
-			$scope.loadNote("Untitled");
-			$scope.loadNotes();
+			fs.mkdirSync(dir + "/" + 'Untitled');
+			$scope.sidebar.getNotebooks();
+			$scope.notebook.load("Untitled");
+			$scope.newNote("Untitled");
 			return
 		}
 
 		var j = 1;
-		while (fs.existsSync(dir + "/Untitled" + j + ".txt")) {
+		while (fs.existsSync(dir + "/" + 'Untitled' + j)) {
+			j++;
+		}
+		fs.mkdirSync(dir + "/" + 'Untitled' + j);
+		$scope.sidebar.getNotebooks();
+		$scope.notebook.load("Untitled" + j);
+		$scope.newNote("Untitled");
+	}
+
+	// Note
+	// =====
+	$scope.noteObj = {};
+	$scope.noteObj.notebook_title = "";
+
+	$scope.newNote = function() {
+		// Check if note exists
+		if (!fs.existsSync(dir + "/" + $scope.notebook.title + "/Untitled.txt")) {
+			// Create Untitled.txt
+			fs.writeFileSync(dir + "/" + $scope.notebook.title + "/Untitled.txt", '');
+			$scope.loadNote("Untitled");
+			$scope.loadNotes($scope.notebook.title);
+			return
+		}
+
+		var j = 1;
+		while (fs.existsSync(dir + "/" + $scope.notebook.title + "/Untitled" + j + ".txt")) {
 			j++;
 		}
 		// Create Untitled + j + .txt
-		fs.writeFileSync(dir + "/Untitled" + j + ".txt", '');
+		fs.writeFileSync(dir + "/" + $scope.notebook.title + "/Untitled" + j + ".txt", '');
 		$scope.loadNote("Untitled" + j);
-		$scope.loadNotes();
+		$scope.loadNotes($scope.notebook.title);
 	}
 	$scope.saveNote = function() {
 		var save_title = $scope.title;
@@ -58,7 +119,7 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 		}
 		fs.rename(dir + '/' + oldTitle + '.txt', dir + '/' + $scope.title + '.txt', function(err){});
 		oldTitle = $scope.title;
-		$scope.loadNotes();
+		$scope.loadNotes($scope.notebook.title);
 	}
 	$scope.toggleMode = function() {
 		if ($scope.mode == 0) {
@@ -105,7 +166,7 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 			$scope.saveNote();
 		}
 		// Check if new note exists
-		if (fs.existsSync(dir + "/" + filename + ".txt")) {
+		if (fs.existsSync(dir + "/" + $scope.notebook.title + "/" + filename + ".txt")) {
 
 			if ($scope.mode == 1) {
 				$scope.toggleMode();
@@ -113,17 +174,17 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 
 			oldTitle = filename;
 			$scope.title = filename;
+			$scope.noteObj.notebook_title = $scope.notebook.title;
 	        $scope.note = fs.readFileSync(dir + '/' + filename + '.txt', 'utf8');
 	        $scope.md_to_html();
 		}
 	}
-	$scope.loadNotes = function() {
+	$scope.loadNotes = function(notebook) {
 		if (!fs.existsSync(dir)) {
 			fs.mkdirSync(dir);
 		}
 		$scope.notes = [];
-		$scope.notebooks = [];
-		var files = fs.readdirSync(dir);
+		var files = fs.readdirSync(dir + "/" + notebook);
 		for (var i = 0; i < files.length; i++) {
 			if (files[i].slice(files[i].length - 4, files[i].length) != '.txt') {
 				$scope.notebooks.push({name: files[i]});
@@ -159,10 +220,7 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 
 	// Run on ready
 	// =============
-	$scope.loadNotes();
-	if ($scope.notes.length > 0) {
-		$scope.loadNote($scope.notes[0]);
-	}
+	$scope.sidebar.init();
 
 	win.on('close', function() {
 		this.hide();
@@ -177,4 +235,11 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 
 function getUserHome() {
   return process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
+}
+
+function getDirectories(srcpath) {
+	console.log(srcpath);
+  return fs.readdirSync(srcpath).filter(function(file) {
+    return fs.statSync(path.join(srcpath, file)).isDirectory();
+  });
 }

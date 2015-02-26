@@ -20,7 +20,7 @@ body {
 	font-weight: 600;
 	margin-left: 10px;
 	margin-bottom: 5px;
-	padding-top: 10px;
+	padding-top: 10px; 
 }
 
 .close-button {
@@ -83,18 +83,6 @@ body {
 	top: 5px;
 }
 
-.notebook-listing {
-	font-size: 12pt;
-	padding: 10px 15px 10px 15px;
-	border-top: 1px solid #f2f2f2;
-	cursor: pointer;
-}
-
-.notebook-listing:hover {
-	color: #fff;
-	background: #007aff;
-}
-
 .sidebar-notes {
 	float: left;
 	width: 299px;
@@ -133,7 +121,7 @@ body {
 	top: 3px;
 }
 
-.note-listing {
+.note-listing, .notebook-listing {
 	font-size: 16pt;
 	padding: 10px;
 	padding-left: 25px;
@@ -143,11 +131,11 @@ body {
 	background: #fff;
 }
 
-.note-listing:hover {
+.note-listing:hover, .notebook-listing:hover {
 	background: #f1f1f1;
 }
 
-.note-listing:nth-child(2) {
+.note-listing:nth-child(2), .notebook-listing:nth-child(2) {
 	border-top: 1px solid #d1d1d1;
 }
 

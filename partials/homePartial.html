@@ -6,12 +6,14 @@
 
 <div class="sidebar-notes">
 	<div class="sidebar-notes-header">
-		<div class="back-arrow"> <span class="glyphicon glyphicon-chevron-left"></span> Notebooks</div>
-		<div class="new-item"><span class="glyphicon glyphicon-plus" ng-click="newNote()"></span></div>
+		<div class="back-arrow" ng-if="sidebar.mode == 'notes'" ng-click="sidebar.changeMode()"> <span class="glyphicon glyphicon-chevron-left"></span> Notebooks</div>
+		<div class="new-item"><span class="glyphicon glyphicon-plus" ng-click="newNote()" ng-if="sidebar.mode == 'notes'"></span></div>
+		<div class="new-item"><span class="glyphicon glyphicon-plus" ng-click="notebook.new()" ng-if="sidebar.mode == 'notebooks'"></span></div>
 	</div>
 	<div class="scroll">
-		<div class="scroll-header">Notes</div>
-		<div class="note-listing" ng-repeat="note_obj in notes track by $index" ng-click="loadNote(note_obj)">{{note_obj}}</div>
+		<div class="scroll-header">{{sidebar.mode}}</div>
+		<div class="note-listing" ng-repeat="note_obj in notes track by $index" ng-click="loadNote(note_obj)" ng-if="sidebar.mode == 'notes'">{{note_obj}}</div>
+		<div class="notebook-listing" ng-repeat="notebook_obj in sidebar.notebooks" ng-click="notebook.load(notebook_obj)" ng-if="sidebar.mode == 'notebooks'">{{notebook_obj}}</div>
 	</div>
 </div>
 
@@ -25,7 +27,7 @@
 				<button type="button" class="btn btn-danger" ng-click="deleteNote()">Delete Note <span class="glyphicon glyphicon-trash"></span></button>	
 			</div>
 			<div class="float-left">
-				<span class="title" ng-click="toggleNotebookMode()">Notebook 1</span>
+				<span class="title">{{noteObj.notebook_title}}</span>
 
 				<small ng-if="titleMode == 0" ng-click="toggleTitleMode()">{{title}}</small>
 				<input class="editTitle" ng-if="titleMode == 1" ng-click="toggleTitleMode()" focus-on="titleMode" ng-blur="toggleTitleMode()" ng-model="$parent.title" placeholder="Untitled...">
