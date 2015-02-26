@@ -3,8 +3,16 @@
 	<div class="toolbar-button hide-button" ng-click="hideWindow()"></div>
 	<div class="toolbar-button full-button" ng-click="fullWindow()"></div>
 </div>
-<div class="sidebar">
-	<div class="note-listing" ng-repeat="note_obj in notes track by $index" ng-click="loadNote(note_obj)">{{note_obj}}</div>
+
+<div class="sidebar-notes">
+	<div class="sidebar-notes-header">
+		<div class="back-arrow"> <span class="glyphicon glyphicon-chevron-left"></span> Notebooks</div>
+		<div class="new-item"><span class="glyphicon glyphicon-plus" ng-click="newNote()"></span></div>
+	</div>
+	<div class="scroll">
+		<div class="scroll-header">Notes</div>
+		<div class="note-listing" ng-repeat="note_obj in notes track by $index" ng-click="loadNote(note_obj)">{{note_obj}}</div>
+	</div>
 </div>
 
 <div class="content">
@@ -17,7 +25,8 @@
 				<button type="button" class="btn btn-danger" ng-click="deleteNote()">Delete Note <span class="glyphicon glyphicon-trash"></span></button>	
 			</div>
 			<div class="float-left">
-				<span>Notebook #1</span>
+				<span class="title" ng-click="toggleNotebookMode()">Notebook 1</span>
+
 				<small ng-if="titleMode == 0" ng-click="toggleTitleMode()">{{title}}</small>
 				<input class="editTitle" ng-if="titleMode == 1" ng-click="toggleTitleMode()" focus-on="titleMode" ng-blur="toggleTitleMode()" ng-model="$parent.title" placeholder="Untitled...">
 			</div>

@@ -12,7 +12,8 @@
     "width": 1280,
     "height": 720,
     "toolbar": false,
-    "frame": true
+    "frame": true,
+    "icon": "logo/logo_64.png"
   },
   "dependencies": {
     "highlight.js": "^8.4.0",

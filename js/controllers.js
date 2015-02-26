@@ -17,9 +17,11 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 
 	// Initialize scope vars
 	// ======================
+	$scope.notebooks = [];
 	$scope.notes = [];
 	$scope.mode = 0;
 	$scope.titleMode = 0;
+	$scope.nodebookMode = false;
 	$scope.note = "";
 	$scope.pureHTML = "";
 	$scope.title = "";
@@ -82,6 +84,13 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 			$scope.titleMode = 0;
 		}
 	}
+	$scope.toggleNotebookMode = function() {
+		if ($scope.notebookMode) {
+			$scope.notebookMode = false;
+		} else {
+			$scope.notebookMode = true;
+		}
+	}
 	$scope.md_to_html = function() {
 		$scope.pureHTML = $sce.trustAsHtml(marked($scope.note));
 	}
@@ -113,8 +122,13 @@ controllers.controller('homeController', ['$scope', '$http', '$sce', function ($
 			fs.mkdirSync(dir);
 		}
 		$scope.notes = [];
+		$scope.notebooks = [];
 		var files = fs.readdirSync(dir);
 		for (var i = 0; i < files.length; i++) {
+			if (files[i].slice(files[i].length - 4, files[i].length) != '.txt') {
+				$scope.notebooks.push({name: files[i]});
+				continue;
+			}
 			$scope.notes.push(files[i].slice(0,files[i].length - 4));	
 		}
 	}
